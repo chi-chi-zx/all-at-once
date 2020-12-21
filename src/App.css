@@ -12,27 +12,27 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+ .page-container {
+   padding: 48px 0;
+   max-width: 1000px;
+   margin: auto;
+ }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+ .block-container {
+   margin-top: 32px;
+   padding: 0 24px;
+ }
 
-.App-link {
-  color: #61dafb;
-}
+ .text-row {
+   display: flex;
+   justify-content: center;
+   margin-top: 8px;
+ }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+ .content-text {
+   text-align: initial;
+   font-family: 'Maison Neue, sans-serif';
+   font-size: 16px;
+   color: #33353a;
+   line-height: 1.38;
+ }

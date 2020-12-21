@@ -1,0 +1,10 @@
+/*Maison Normal*/
+@font-face {
+    font-family: 'Maison Neue';
+    src: url('MaisonNeue-Book.woff2') format('woff2'),
+      url('MaisonNeue-Book.woff') format('woff'),
+      url('MaisonNeue-Book.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
