@@ -1,70 +1,128 @@
-# Getting Started with Create React App
+## All at Once: Temporally Adaptive Multi-Frame Interpolation with Advanced Motion Modeling
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+Zhixiang Chi, Rasoul Mohammadi Nasiri, Zheng Liu, Juwei Lu, Jin Tang, Konstantinos N Plataniotis
 
-### `npm start`
+ECCV2020
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+#### Introduction
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This work introduces a true multi-frame interpolator. It utilizes a pyramidal style network in the temporal domain to complete the multi-frame interpolation task in one-shot. A novel  flow estimation procedure using a relaxed loss function, and an advanced, cubic-based, motion model is also used to further boost interpolation accuracy when complex motion segments are encountered.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- #### Overall 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![](ims\overall.PNG)
 
-### `npm run eject`
+- #### Efficiency
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  ![efficiency](ims\efficiency.PNG)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- #### Example
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  ​	![quality](ims\quality.PNG)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### Requirements
 
-## Learn More
+1. Tensorflow 1.4
+2. Python 2.7
+3. CUDA 8.0
+4. slim
+5. cv2 (opencv)
+6. ffmpeg (used to decode/encode videos for slow motion generation.)
+7. The code is developed using the above packages but it was tested on a machine with python 3.7 + tensorflow 1.12 + CUDA 9.0
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Test the pretrained models
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The demo.py code provided takes 4 images: 1,2,3,4 and generates 7 frames between frame 2 & 3.
 
-### Code Splitting
+```python
+CUDA_VISIBLE_DEVICES=0 python demo.py \
+			--im_1=./ims/0001.jpg\
+			--im_2=./ims/0002.jpg\
+			--im_3=./ims/0003.jpg\
+			--im_4=./ims/0004.jpg
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### Slow motion video generation
 
-### Making a Progressive Web App
+The provided slow_motion_video_demo.py  generates slow motion effects. The release model is trained to generate 7 intermediate frames (8x slower).  To generate 2x or 4x slow motion, we simply remove the corresponding frames at specific time stamps. The following demo code can be used:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```python
+CUDA_VISIBLE_DEVICES=0 python slow_motion_video_demo.py \
+			--video_folder=./video \
+    		--video_name=3.mp4     \
+        	--output_name=3_slow_8.mp4 \
+            --rate=8 \
+            --keep_frame=True
+```
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+Our work is able to be extended to rates higher than 8x. A generic way is to extend more pyramid levels, if 960fps or higher fps training videos are available. A naive way to extend 8x model to higher rates is to follow the iterative methods. To generates 16x slow motion, we can:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. run 8x and drop frames to get 2x video, and them apply the 8x model. (run 8x model 2 times)
+2. run 8x and then run 8x as but only keep the middle frame. (run 8x model 8 times)
+3. 4x and 4x (run 8x model 7 times)
 
-### `npm run build` fails to minify
+All of the above methods can get 16x slower videos. The user can balance the computation cost and quality.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### Training data preparation
+
+The training set should contain sequences of sub folders each represents one training sample. Each training sample should contain 4 input frames and 7 ground truth frames.
+
+```
+train/
+    1/
+    2/
+    3/
+		frame0.jpg   frame1.jpg   frame2.jpg   frame3.jpg 
+		framet1.jpg   framet2.jpg   framet3.jpg   framet4.jpg framet5.jpg   framet6.jpg   framet7.jpg
+	4/
+	...
+```
+
+The validation set follows the same structure.
+
+
+
+#### Fine-tune the pre-trained model
+
+We provide a training script to finetune the pre-trained model. As both training and convergence are slow and require large memory, we provide the demo training code for jointly fine-tuning all the modules based on the pre-trained model.
+
+```python
+CUDA_VISIBLE_DEVICES=0 python trainer_slowmo_new.py 
+			--start_epoch=0 \
+    		--fine_tune \
+        	--valid_path=valid \
+            --train_path=train \
+            --save_path=save \
+```
+
+Note, this training code jointly trains all the modules instead of step-wise training. So training from scratch will harm the performance.
+
+
+
+#### Citation
+
+Please cite the following paper if you feel this repository useful.
+
+```
+@inproceedings{chiall,
+        author    = {Zhixiang Chi, Rasoul Mohammadi Nasiri, Zheng Liu, Juwei Lu, Jin Tang, Konstantinos N Plataniotis}, 
+        title     = {All at Once: Temporally Adaptive Multi-Frame Interpolation with Advanced Motion Modeling}, 
+        booktitle = {European Conference on Computer Vision},
+        year      = {2020}
+    }
+```
+
+
+
+
+

@@ -1,5 +1,5 @@
 export {
-    P,
-    HeadingL,
-    HeadingS
+  P,
+  HeadingL,
+  HeadingS
 } from './Text'

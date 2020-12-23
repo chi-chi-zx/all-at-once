@@ -36,3 +36,28 @@
    color: #33353a;
    line-height: 1.38;
  }
+
+ .content-image {
+     width: 100%;
+     padding-bottom: 20%;
+     background-size: cover;
+     background-position: center center;
+     background-repeat: no-repeat;
+     border-radius: 2px;
+ }
+
+ .result-image {
+     width: 100%;
+     padding-bottom: 28%;
+     background-size: cover;
+     background-position: center center;
+     background-repeat: no-repeat;
+     border-radius: 2px;
+     margin-top: 24px;
+ }
+
+ .paper-download {
+     width: 140px;
+     height: 140px;
+     cursor: pointer;
+ }
