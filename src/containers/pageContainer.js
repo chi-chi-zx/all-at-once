@@ -113,7 +113,8 @@ const PageContainer = () => {
           className='result-image'
           style={{
             backgroundImage: `url(${eff})`,
-            position: 'relative'
+            position: 'relative',
+            paddingBottom: '44%'
           }}
         />
       </div>
