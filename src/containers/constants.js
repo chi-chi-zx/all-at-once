@@ -22,5 +22,5 @@ export const PageText = {
   paperTitle: 'Paper',
   paperLink: 'https://www.ecva.net/papers/eccv_2020/papers_ECCV/papers/123720103.pdf',
   overviewTitle: 'Method overview',
-  resultTitle: 'Results123'
+  resultTitle: 'Results'
 }
