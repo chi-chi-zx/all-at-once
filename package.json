@@ -2,7 +2,7 @@
   "name": "all-at-once",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://rebeccaz0719.github.io/all-at-once/",
+  "homepage": "https://chi-chi-zx.github.io/all-at-once/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
