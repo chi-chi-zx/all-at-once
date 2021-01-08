@@ -21,6 +21,7 @@ export const PageText = {
   citationTitle: 'Citation',
   paperTitle: 'Paper',
   paperLink: 'https://www.ecva.net/papers/eccv_2020/papers_ECCV/papers/123720103.pdf',
+  suppLink: 'https://www.ecva.net/papers/eccv_2020/papers_ECCV/papers/123720103-supp.zip',
   overviewTitle: 'Method overview',
   resultTitle: 'Results'
 }

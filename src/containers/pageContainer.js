@@ -5,7 +5,7 @@ import overviewImage from '../images/overview.png'
 import compare from '../images/compare.png'
 import sample from '../images/sample.png'
 import eff from '../images/eff.png'
-import paper from '../images/paper.png'
+import pdfImg from '../images/pdfLogo.png'
 
 const PageContainer = () => {
   const {
@@ -21,6 +21,7 @@ const PageContainer = () => {
     citationTitle,
     paperTitle,
     paperLink,
+    suppLink,
     overviewTitle,
     resultTitle
   } = PageText
@@ -54,6 +55,25 @@ const PageContainer = () => {
       </div>
       <div className='block-container'>
         <div className='text-row' style={{ justifyContent: 'start' }}>
+          <HeadingS>{paperTitle}</HeadingS>
+        </div>
+        <div className='text-row' style={{ justifyContent: 'center' }}>
+          <div>
+            <a href={paperLink} target='_blank' rel='noreferrer'>
+              <img className='paper-download' src={pdfImg} alt='paper_download' />
+            </a>
+            <P>ECCV20</P>
+          </div>
+          <div>
+            <a href={suppLink} target='_blank' rel='noreferrer'>
+              <img className='paper-download' src={pdfImg} alt='paper_download' />
+            </a>
+            <P>Supplementary</P>
+          </div>
+        </div>
+      </div>
+      <div className='block-container'>
+        <div className='text-row' style={{ justifyContent: 'start' }}>
           <HeadingS>{citationTitle}</HeadingS>
         </div>
         <div style={{ textAlign: 'initial', backgroundColor: '#e9e9e9', padding: '16px' }}>
@@ -65,16 +85,6 @@ const PageContainer = () => {
                     '  year   = {2020}\n' +
                     '}'}
           </code>
-        </div>
-      </div>
-      <div className='block-container'>
-        <div className='text-row' style={{ justifyContent: 'start' }}>
-          <HeadingS>{paperTitle}</HeadingS>
-        </div>
-        <div className='text-row' style={{ justifyContent: 'start' }}>
-          <a href={paperLink} target='_blank' rel='noreferrer'>
-            <img className='paper-download' src={paper} alt='paper_download' />
-          </a>
         </div>
       </div>
       <div className='block-container'>
